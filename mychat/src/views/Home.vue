@@ -1,13 +1,13 @@
 <template>
   <div class="main">
-    <el-container>
-      <el-aside width="200px"><Aside></Aside></el-aside>
-      <el-container>
-        <el-header><Header></Header></el-header>
-        <el-main><Main></Main></el-main>
-        <el-footer><Footer></Footer></el-footer>
-      </el-container>
-    </el-container>
+    <div class="left">
+      <Aside></Aside>
+    </div>
+    <div class="right">
+      <Header></Header>
+      <ChatBox></ChatBox>
+      <Footer></Footer>
+    </div>
   </div>
 </template>
 
@@ -15,34 +15,23 @@
 import Aside from "./Aside/index.vue";
 import Footer from "./Footer/index.vue";
 import Header from "./Header/index.vue";
-import Main from "./Main/index.vue";
+import ChatBox from "./Center/index.vue";
 </script>
 
 <style scoped lang="scss">
 .main {
-  height: 100vh;
-  overflow: hidden;
-  .el-container {
-    height: 100%;
-    .el-aside {
-      width: 18%;
-    }
-    :deep(.el-header) {
-      --el-header-padding: 0;
-      --el-header-height: 80px;
-    }
-    .el-main {
-      height: calc(100% - 80px);
-      background-color: #ccc;
-      color: #333;
-    }
-    :deep(.el-footer) {
-      --el-footer-height: 100px;
-      --el-footer-padding: 0;
-    }
-    .el-footer {
-      height: 100px;
-    }
+  display: flex;
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+  .left {
+    width: 20%;
+    background-color: #f0f0f0;
+  }
+  .right {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

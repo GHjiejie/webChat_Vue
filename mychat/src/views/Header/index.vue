@@ -1,21 +1,21 @@
 <template>
   <div class="header">
-    <span class="message_title">超级无敌爆龙战士</span>
+    <span class="message_title">Hello World!</span>
   </div>
 </template>
 <script setup></script>
 <style scoped lang="scss">
 .header {
-  height: 80px;
-
-  background-color: rgb(255, 255, 255);
+  height: 10vh;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+  border-bottom: #ccc 1px solid;
   .message_title {
-    padding-left: 2rem;
-    line-height: 80px;
-
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: bolder;
     color: rgb(0, 0, 0);
+    line-height: 10vh;
+    margin-left: 1rem;
   }
 }
 </style>

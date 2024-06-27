@@ -33,7 +33,7 @@
   width: 0px;
 }
 .aside {
-  height: 100%;
+  height: 100vh;
   overflow: auto;
   border-right: 1px solid #413c3c67;
 
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    height: 80px;
+    height: 10vh;
     background-color: black;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 
@@ -54,8 +54,8 @@
       align-items: center;
       padding: 5px;
       img {
-        width: 4rem;
-        height: 4rem;
+        width: 2.5rem;
+        height: 2.5rem;
         border-radius: 50%;
         object-fit: cover;
       }
@@ -84,10 +84,11 @@
     .messageList {
       display: flex;
       flex-direction: column;
+      background-color: #e8e6e6;
 
       .messageItem {
         height: 4rem;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f5f5f5;
         transition: all 0.3s;
         padding: 2.5rem 0.5rem;
         display: flex;
@@ -98,8 +99,8 @@
           display: flex;
           align-items: center;
           img {
-            width: 3rem;
-            height: 3rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 50%;
             object-fit: cover;
           }
@@ -119,7 +120,7 @@
           }
         }
         &:hover {
-          background-color: #f0f0f0;
+          background-color: #c5c5c5;
           cursor: pointer;
         }
       }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>可编辑的 Div</title>
+  <style>
+    .input_box {
+      width: 300px;
+      height: 40px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="input_box" contenteditable="true"></div>
+
+  <script>
+    const inputBox = document.querySelector('.input_box');
+
+    inputBox.addEventListener('input', () => {
+      console.log('输入内容：', inputBox.innerHTML);
+    });
+  </script>
+
+</body>
+
+</html>

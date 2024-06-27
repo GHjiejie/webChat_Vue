@@ -24,60 +24,72 @@
         </div>
       </div>
       <!-- 聊天输入框 -->
-      <div class="input_box">
-        <el-input
-          placeholder="请输入内容"
-          v-model="message"
-          @keyup.enter="sendMessage"
-        ></el-input>
-      </div>
+      <div
+        class="input_box"
+        contenteditable="true"
+        @keyup.enter="sendMessage"
+        @paste="handlePaste"
+        ref="inputBox"
+      ></div>
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
-const message = ref("");
+const inputBox = ref(null);
 const sendMessage = () => {
-  console.log(message.value);
-  message.value = "";
+  const message = inputBox.value.innerText;
+  console.log("Message:", message);
+  inputBox.value.innerText = "";
+};
+const handlePaste = (e) => {
+  const items = e.clipboardData.items;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].kind === "file") {
+      const file = items[i].getAsFile();
+      console.log("Pasted file:", file);
+      // Here you can handle the file (e.g., upload it, display it, etc.)
+    }
+  }
 };
 </script>
 <style scoped lang="scss">
 .footer {
-  height: 20rem;
-  background-color: rgb(255, 255, 255);
+  height: 20vh;
+  background-color: #f5f5f5;
+
   .send_box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 100%;
+
     // padding: 0 1rem;
     .tools {
       width: 100%;
-      height: 3rem;
+      height: 5vh;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f5f5f5;
       padding: 0 1rem;
+
       svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
         margin-right: 1rem;
         &:hover {
           cursor: pointer;
         }
       }
-
-      .el-button {
-        margin-right: 1rem;
-      }
     }
     .input_box {
-      flex: 1;
-      .el-input {
-        width: 100%;
+      width: 100%;
+      height: 15vh;
+      padding: 0.5rem;
+      overflow: auto;
+      &:focus {
+        outline: none;
       }
     }
   }
