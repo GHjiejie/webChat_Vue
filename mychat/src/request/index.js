@@ -2,19 +2,14 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const service = axios.create({
-  baseURL: "http://localhost:3000",
-  timeout: 3000,
+  baseURL: "http://localhost:9000",
 });
 service.interceptors.request.use(
   (config) => {
-    console.log("请求拦截");
+    // console.log("请求拦截");
     const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = token;
-    } else {
-      console.log("token不存在");
-      router.push("/login");
-    }
+    //  将authorization设置到请求头里面,确保后面的每一次请求都会携带token
+    config.headers.authorization = `${token}`;
     return config;
   },
   (error) => {
@@ -24,10 +19,11 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
-    console.log();
-    // 判断是否有token，如果没有，跳转到登录页面
-    const token = localStorage.getItem("token");
-    if (!token) {
+    // console.log("响应拦截", response);
+    const { authorization } = response.headers;
+    // 将authorization设置到sessionStorage里面;
+    localStorage.setItem("token", authorization);
+    if (response.data.code === 401) {
       router.push("/login");
     }
     return response;

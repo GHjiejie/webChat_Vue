@@ -8,29 +8,63 @@
         <span class="username">Jie</span>
         <span class="user_id">ID: 123456</span>
       </div>
+      <div class="user_add">
+        <h1 @click="handleAdd">+</h1>
+      </div>
     </div>
     <div class="center">
-      <div class="messageList">
-        <div class="messageItem" v-for="item in 50">
-          <div class="message_user">
+      <div class="conversationList">
+        <div class="conversationItem" v-for="item in 10">
+          <div class="conversation_user">
             <img
               src="../../assets/images/pexels-photo-3560044.webp"
               alt="avatar"
             />
           </div>
-          <div class="message_info">
-            <span class="message_username">Jack</span>
-            <span class="message_content">Hello World</span>
+          <div class="conversation_info">
+            <span class="conversation_username">Jack</span>
+            <span class="conversation_content">Hello World</span>
           </div>
         </div>
       </div>
     </div>
     <div class="footer"></div>
+    <el-dialog v-model="showAddDialog" width="500" center :show-close="false">
+      <UserAdd></UserAdd>
+    </el-dialog>
   </div>
 </template>
+<script setup>
+import { ref, onMounted, onBeforeMount } from "vue";
+import { getUserInfo } from "@/apis/user";
+import UserAdd from "@/components/UserAdd/index.vue";
+const messageList = ref([]);
+const showAddDialog = ref(false);
+
+const handleAdd = () => {
+  showAddDialog.value = true;
+};
+
+onBeforeMount(async () => {
+  const res = await getUserInfo(localStorage.getItem("userId"));
+  console.log(res);
+});
+onMounted(() => {
+  // 根据ID获取当前用户的相关信息
+});
+</script>
 <style scoped lang="scss">
 ::-webkit-scrollbar {
   width: 0px;
+}
+:deep(.el-dialog) {
+  border-radius: 1rem;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  .el-dialog__header {
+    display: none;
+  }
 }
 .aside {
   height: 100vh;
@@ -76,17 +110,33 @@
         font-size: 14px;
       }
     }
+    .user_add {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+
+      h1 {
+        font-size: 2.5rem;
+        color: #ccc;
+        font-weight: bold;
+        &:hover {
+          color: skyblue;
+          cursor: pointer;
+        }
+      }
+    }
   }
   .center {
     flex: 1;
     overflow: auto;
 
-    .messageList {
+    .conversationList {
       display: flex;
       flex-direction: column;
       background-color: #e8e6e6;
 
-      .messageItem {
+      .conversationItem {
         height: 4rem;
         border-bottom: 1px solid #f5f5f5;
         transition: all 0.3s;
@@ -94,7 +144,7 @@
         display: flex;
         align-items: center;
 
-        .message_user {
+        .conversation_user {
           height: 100%;
           display: flex;
           align-items: center;
@@ -105,17 +155,17 @@
             object-fit: cover;
           }
         }
-        .message_info {
+        .conversation_info {
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
           gap: 0.5rem;
           margin-left: 1rem;
-          .message_username {
+          .conversation_username {
             font-size: 16px;
           }
-          .message_content {
+          .conversation_content {
             font-size: 14px;
           }
         }
