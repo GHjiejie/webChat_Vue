@@ -22,12 +22,12 @@
         </div>
       </div>
     </div>
-    <button @click="agree">同意好友申请</button>
-    <button @click="reject">拒绝好友申请</button>
+    <!-- <button @click="agree">同意好友申请</button>
+    <button @click="reject">拒绝好友申请</button> -->
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
 
 import {
   searchUser,
@@ -35,6 +35,11 @@ import {
   agreeFriend,
   refuseFriend,
 } from "@/apis/user";
+const props = defineProps({
+  username: String,
+  avatar: String,
+  phone: String,
+});
 const userList = ref([]);
 const searchValue = ref("");
 // 搜索好友
@@ -49,6 +54,9 @@ const apply = async (toUserId) => {
   const data = {
     fromUserId: localStorage.getItem("userId"),
     toUserId,
+    username: props.username,
+    avatar: props.avatar,
+    phone: props.phone,
   };
   const res = await applyFriend(data);
   console.log(res);

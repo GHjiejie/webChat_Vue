@@ -32,6 +32,19 @@ export function searchUser(keywords) {
   });
 }
 
+// 更新用户信息
+export function updateUserInfo(data) {
+  console.log("data", data);
+  return httpRequest({
+    url: "/v1/user/updateUserInfo",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 // 添加好友申请
 export function applyFriend(data) {
   return httpRequest({
@@ -42,25 +55,19 @@ export function applyFriend(data) {
 }
 
 // 同意好友申请
-export function agreeFriend() {
+export function agreeFriend(data) {
   return httpRequest({
     url: "/v1/user/acceptFriendRequest",
     method: "post",
-    data: {
-      userId: "667eb90e126801450046e054",
-      fromUserId: "667eb913126801450046e057",
-    },
+    data,
   });
 }
 
 // 拒绝好友申请
-export function refuseFriend() {
+export function refuseFriend(data) {
   return httpRequest({
     url: "/v1/user/rejectFriendRequest",
     method: "post",
-    data: {
-      userId: "667eb913126801450046e057",
-      fromUserId: "667ebc46a4667df3327aed44",
-    },
+    data,
   });
 }
