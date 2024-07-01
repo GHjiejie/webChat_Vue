@@ -37,10 +37,6 @@
 <script setup>
 import { reactive, ref } from "vue";
 const inputBox = ref(null);
-// const sendMessage=reactive({
-//   message:''
-
-// })
 const sendMessage = () => {
   const message = inputBox.value.innerText;
   console.log("Message:", message);

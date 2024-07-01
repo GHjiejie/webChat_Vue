@@ -13,18 +13,23 @@
       </div>
       <div class="center">
         <div class="conversationList">
-          <div class="conversationItem" v-for="item in 10">
-            <div class="conversation_user">
-              <img
-                src="../../assets/images/pexels-photo-3560044.webp"
-                alt="avatar"
-              />
-            </div>
-            <div class="conversation_info">
-              <span class="conversation_username">Jack</span>
-              <span class="conversation_content">Hello World</span>
-            </div>
-          </div>
+          <router-link
+            :to="`/chat/${conversation._id}`"
+            class="conversationItem"
+            v-for="conversation in conversationList"
+          >
+            <template v-if="conversation.type === 'private'">
+              <div class="conversation_user">
+                <img :src="conversation.friend.avatar" alt="avatar" />
+              </div>
+              <div class="conversation_info">
+                <span class="conversation_username">{{
+                  conversation.friend.username
+                }}</span>
+                <!-- <span class="conversation_content">Hello World</span> -->
+              </div>
+            </template>
+          </router-link>
         </div>
       </div>
       <div class="footer"></div>
@@ -34,7 +39,40 @@
     </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { ref, onBeforeMount, watch } from "vue";
+import { useRoute } from "vue-router";
+import { getUserInfo } from "@/apis/user";
+import { getConversationList } from "@/apis/chat";
+// import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
+const conversationList = ref([]);
+const currentUserId = ref(localStorage.getItem("userId"));
+onBeforeMount(async () => {
+  await getAllConversation();
+});
+
+const getAllConversation = async () => {
+  const params = {
+    userId: currentUserId.value,
+  };
+  try {
+    const res = await getConversationList(params);
+    if (res.data.code === 200) {
+      conversationList.value = res.data.data;
+    }
+  } catch (error) {}
+};
+// watch(privateFriendIdArr, async () => {
+//   console.log("好友ID数组发生变化");
+//   for (let i = 0; i < privateFriendIdArr.value.length; i++) {
+//     const res = await getUserInfo(privateFriendIdArr.value[i]);
+//     if (res.data.code === 200) {
+//       privateFriendArr.value.push(res.data.data);
+//     }
+//   }
+//   console.log("输出好友数组", privateFriendArr.value);
+// });
+</script>
 <style scoped lang="scss">
 .chatbox {
   display: flex;

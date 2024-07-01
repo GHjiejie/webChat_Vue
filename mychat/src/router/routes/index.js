@@ -10,14 +10,11 @@ const routes = [
         path: "chat",
         name: "Chat",
         component: () => import("@/views/Chat/index.vue"),
-        redirect: {
-          name: "ChatRoom",
-        },
 
         children: [
           {
-            // path: "chatroom/:i",
-            path: "chatroom",
+            path: ":roomId",
+            // path: "chatroom",
             name: "ChatRoom",
             component: () => import("@/views/Chat/ChatRoom/index.vue"),
           },

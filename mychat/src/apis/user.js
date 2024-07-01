@@ -34,7 +34,6 @@ export function searchUser(keywords) {
 
 // 更新用户信息
 export function updateUserInfo(data) {
-  console.log("data", data);
   return httpRequest({
     url: "/v1/user/updateUserInfo",
     method: "post",
