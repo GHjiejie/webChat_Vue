@@ -53,15 +53,16 @@ import { getUserInfo } from "@/apis/user";
 import { useRoute } from "vue-router";
 import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
 
-import io from "socket.io-client";
-const socket = io("http://localhost:3000");
+// import io from "socket.io-client";
+// const socket = io("http://localhost:3000");
+import { socketServer } from "@/plugins/socket";
 const userInfo = ref({});
 const route = useRoute();
 const conversationId = ref("");
 // 监听服务器返回的数据
-socket.on("chatRes", (data) => {
-  console.log("我收到了服务器返回的请求", data);
-});
+// socket.on("chatRes", (data) => {
+//   console.log("我收到了服务器返回的请求", data);
+// });
 // 与当前用户聊天
 const chat = async (userId) => {
   const data = {
@@ -74,7 +75,7 @@ const chat = async (userId) => {
     if (res.data.code === 200) {
       // console.log("已经创建过私聊", res.data.data);
       conversationId.value = res.data.data._id;
-      socket.emit("join", "jie加入了房间");
+      // socket.emit("join", "jie加入了房间");
 
       return;
     } else {

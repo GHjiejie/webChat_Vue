@@ -17,6 +17,9 @@ const routes = [
             // path: "chatroom",
             name: "ChatRoom",
             component: () => import("@/views/Chat/ChatRoom/index.vue"),
+            meta: {
+              userId: "",
+            },
           },
         ],
       },

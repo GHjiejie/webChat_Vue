@@ -26,3 +26,28 @@ export function getConversationList(params) {
     method: "get",
   });
 }
+
+// 获取选定的会话
+export function getSelectedConversation(params) {
+  return httpRequest({
+    url: `/v1/chat/getSelectedConversation/${params.conversationId}`,
+    method: "get",
+  });
+}
+
+// 根据conversationId获取聊天记录
+export function getMessages(params) {
+  return httpRequest({
+    url: `/v1/chat/getMessages/${params.conversationId}`,
+    method: "get",
+  });
+}
+
+// 发送消息
+export function sendMessage(data) {
+  return httpRequest({
+    url: "/v1/chat/sendMessage",
+    method: "post",
+    data,
+  });
+}

@@ -13,10 +13,11 @@
       </div>
       <div class="center">
         <div class="conversationList">
-          <router-link
-            :to="`/chat/${conversation._id}`"
+          <div
             class="conversationItem"
             v-for="conversation in conversationList"
+            :key="conversation._id"
+            @click="navigateToChat(conversation._id)"
           >
             <template v-if="conversation.type === 'private'">
               <div class="conversation_user">
@@ -26,10 +27,9 @@
                 <span class="conversation_username">{{
                   conversation.friend.username
                 }}</span>
-                <!-- <span class="conversation_content">Hello World</span> -->
               </div>
             </template>
-          </router-link>
+          </div>
         </div>
       </div>
       <div class="footer"></div>
@@ -41,16 +41,26 @@
 </template>
 <script setup>
 import { ref, onBeforeMount, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { getUserInfo } from "@/apis/user";
 import { getConversationList } from "@/apis/chat";
 // import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
+// import io from "socket.io-client";
+// const socket = io("http://localhost:3000");
+import socketServer from "@/plugins/socket.js";
+const router = useRouter();
 const conversationList = ref([]);
 const currentUserId = ref(localStorage.getItem("userId"));
 onBeforeMount(async () => {
   await getAllConversation();
 });
 
+// 在跳转之前，用户需要加入私聊房间
+const navigateToChat = (roomId) => {
+  // socket.emit("joinRoom", roomId);
+  socketServer.joinRoom("joinRoom", roomId);
+  router.push(`/chat/${roomId}`);
+};
 const getAllConversation = async () => {
   const params = {
     userId: currentUserId.value,
@@ -62,6 +72,10 @@ const getAllConversation = async () => {
     }
   } catch (error) {}
 };
+// socket.on("chatRes", (data) => {
+//   console.log("我收到了服务器返回的请求", data);
+//   // messageList.value.push(data);
+// });
 // watch(privateFriendIdArr, async () => {
 //   console.log("好友ID数组发生变化");
 //   for (let i = 0; i < privateFriendIdArr.value.length; i++) {
@@ -72,6 +86,7 @@ const getAllConversation = async () => {
 //   }
 //   console.log("输出好友数组", privateFriendArr.value);
 // });
+//
 </script>
 <style scoped lang="scss">
 .chatbox {
