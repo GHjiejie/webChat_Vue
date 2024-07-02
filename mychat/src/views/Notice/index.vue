@@ -6,7 +6,12 @@
           <h1>没有收到好友请求哦</h1>
         </template>
         <template v-else>
-          <noticeDetails :noticeArr="friendRequests" type="all"></noticeDetails>
+          <noticeDetails
+            :noticeArr="friendRequests"
+            type="all"
+            @applyFriend="apply"
+            @refuseFriend="refuse"
+          ></noticeDetails>
         </template>
       </el-tab-pane>
       <el-tab-pane label="已发送">
@@ -19,34 +24,18 @@
             type="sent"
           ></noticeDetails>
         </template>
-        <!-- <template v-else>
-          <div
-            class="sentFriendRequestItem"
-            v-for="request in sentFriendRequests"
-          >
-            <div class="sentFriendRequest_user">
-              <img
-                src="../../assets/images/pexels-photo-3560044.webp"
-                alt="avatar"
-              />
-            </div>
-            <div class="sentFriendRequest_info">
-              <span class="sentFriendRequest_username">{{
-                request.username
-              }}</span>
-              <span class="sentFriendRequest_content">
-                老老实实加我为好友，不要拒绝哦
-              </span>
-            </div>
-          </div>
-        </template> -->
       </el-tab-pane>
       <el-tab-pane label="待处理">
         <template v-if="pendingArr.length === 0">
           <h1>没有待处理的好友请求哦</h1>
         </template>
         <template v-else>
-          <noticeDetails :noticeArr="pendingArr" type="pending"></noticeDetails>
+          <noticeDetails
+            :noticeArr="pendingArr"
+            type="pending"
+            @applyFriend="apply"
+            @refuseFriend="refuse"
+          ></noticeDetails>
         </template>
       </el-tab-pane>
       <el-tab-pane label="已同意">
@@ -90,6 +79,13 @@ const pendingArr = ref([]);
 const acceptedArr = ref([]);
 const rejectedArr = ref([]);
 
+const refuse = (data) => {
+  // console.log("输出拒绝的数组", data);
+  rejectedArr.value.push(data);
+};
+const apply = (data) => {
+  acceptedArr.value.push(data);
+};
 onBeforeMount(async () => {
   const res = await getUserInfo(localStorage.getItem("userId"));
   currentUser.value = res.data.data;

@@ -50,14 +50,15 @@
 <script setup>
 import { ref, onBeforeMount, watch } from "vue";
 import { getUserInfo } from "@/apis/user";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
 
 // import io from "socket.io-client";
 // const socket = io("http://localhost:3000");
-import { socketServer } from "@/plugins/socket";
+// import { socketServer } from "@/plugins/socket";
 const userInfo = ref({});
 const route = useRoute();
+const router = useRouter();
 const conversationId = ref("");
 // 监听服务器返回的数据
 // socket.on("chatRes", (data) => {
@@ -75,22 +76,19 @@ const chat = async (userId) => {
     if (res.data.code === 200) {
       // console.log("已经创建过私聊", res.data.data);
       conversationId.value = res.data.data._id;
-      // socket.emit("join", "jie加入了房间");
-
+      router.push(`/chat/${conversationId.value}`);
       return;
     } else {
-      console.log("未创建过私聊");
       try {
         const res = await createPrivateRoom(data);
         if (res.data.code === 200) {
           console.log("创建私聊成功");
+          console.log("输出新创建的房间号", res.data.data._id);
+          router.push(`/chat/${res.data.data._id}`);
         }
       } catch (error) {}
     }
   } catch (error) {}
-
-  // console.log("chat", userId);
-  // console.log('curerentUserID' ,localStorage.getItem('userId'));
 };
 // 与当前用户语音通话
 const languageCall = (userId) => {

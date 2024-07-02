@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router/index.js";
+import { ElMessage } from "element-plus";
 
 const service = axios.create({
   baseURL: "http://localhost:9000",
@@ -11,7 +12,15 @@ service.interceptors.request.use(
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.authorization = `${token}`;
+    } else if (!["/v1/user/login", "/v1/user/register"].includes(config.url)) {
+      ElMessage.error("登录过期，3s后跳转到登录页");
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+      // 返回一个Rejected Promise以阻止请求的发送
+      return Promise.reject(new Error("登录过期"));
     }
+
     return config;
   },
   (error) => {

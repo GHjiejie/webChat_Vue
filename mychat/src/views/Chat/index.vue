@@ -13,11 +13,12 @@
       </div>
       <div class="center">
         <div class="conversationList">
-          <div
+          <router-link
+            :to="`/chat/${conversation._id}`"
             class="conversationItem"
+            active-class="active"
             v-for="conversation in conversationList"
             :key="conversation._id"
-            @click="navigateToChat(conversation._id)"
           >
             <template v-if="conversation.type === 'private'">
               <div class="conversation_user">
@@ -29,7 +30,7 @@
                 }}</span>
               </div>
             </template>
-          </div>
+          </router-link>
         </div>
       </div>
       <div class="footer"></div>
@@ -44,9 +45,7 @@ import { ref, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
 import { getUserInfo } from "@/apis/user";
 import { getConversationList } from "@/apis/chat";
-// import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
-// import io from "socket.io-client";
-// const socket = io("http://localhost:3000");
+
 import socketServer from "@/plugins/socket.js";
 const router = useRouter();
 const conversationList = ref([]);
@@ -55,12 +54,6 @@ onBeforeMount(async () => {
   await getAllConversation();
 });
 
-// 在跳转之前，用户需要加入私聊房间
-const navigateToChat = (roomId) => {
-  // socket.emit("joinRoom", roomId);
-  socketServer.joinRoom("joinRoom", roomId);
-  router.push(`/chat/${roomId}`);
-};
 const getAllConversation = async () => {
   const params = {
     userId: currentUserId.value,
@@ -72,23 +65,14 @@ const getAllConversation = async () => {
     }
   } catch (error) {}
 };
-// socket.on("chatRes", (data) => {
-//   console.log("我收到了服务器返回的请求", data);
-//   // messageList.value.push(data);
-// });
-// watch(privateFriendIdArr, async () => {
-//   console.log("好友ID数组发生变化");
-//   for (let i = 0; i < privateFriendIdArr.value.length; i++) {
-//     const res = await getUserInfo(privateFriendIdArr.value[i]);
-//     if (res.data.code === 200) {
-//       privateFriendArr.value.push(res.data.data);
-//     }
-//   }
-//   console.log("输出好友数组", privateFriendArr.value);
-// });
-//
 </script>
 <style scoped lang="scss">
+.active {
+  background-color: #c7c6c6 !important;
+}
+a {
+  text-decoration: none;
+}
 .chatbox {
   display: flex;
   // background-color: red;
@@ -149,6 +133,7 @@ const getAllConversation = async () => {
           padding: 2.5rem 0.5rem;
           display: flex;
           align-items: center;
+          background-color: #e8e6e6;
 
           .conversation_user {
             height: 100%;
@@ -169,14 +154,16 @@ const getAllConversation = async () => {
             gap: 0.5rem;
             margin-left: 1rem;
             .conversation_username {
-              font-size: 16px;
+              font-size: 0.9rem;
+              font-weight: bold;
+              color: black;
             }
             .conversation_content {
               font-size: 14px;
             }
           }
           &:hover {
-            background-color: #c5c5c5;
+            background-color: #c5c5c562;
             cursor: pointer;
           }
         }

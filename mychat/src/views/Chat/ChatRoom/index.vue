@@ -2,8 +2,7 @@
   <div class="chatRoom">
     <div class="header">
       <div class="chat-user">
-        <!-- <span>{{ currentUserinfo.username }}</span> -->
-        <span>Jie</span>
+        <span>GXNU-SOFTWORE-409</span>
       </div>
     </div>
     <div class="content" ref="contentRef">
@@ -22,10 +21,12 @@
             "
           >
             <div class="avatar">
-              <!-- <img
-                :src="currentUserinfo.avatar"
+              <img
+                v-if="message.content.senderId === senderUserInfo._id"
+                :src="senderUserInfo.avatar"
                 alt=""
-              /> -->
+              />
+              <img v-else :src="receiverUserInfo.avatar" alt="" />
             </div>
             <div class="messageContent">
               <div class="messageText">{{ message.content.text }}</div>
@@ -81,7 +82,7 @@ import { ElMessage } from "element-plus";
 import socketServer from "@/plugins/socket";
 import { getConversationList } from "../../../apis/chat";
 const route = useRoute();
-// const currentUserinfo = ref({});
+const memberList = ref([]);
 const senderUserInfo = ref({});
 const receiverUserInfo = ref({});
 const currentUserId = ref(localStorage.getItem("userId"));
@@ -100,16 +101,17 @@ const sendContent = reactive({
 const formatContnet = async (event) => {
   event.preventDefault();
   // 获取输入框内容
-  sendContent.text = inputBox.value.innerText;
-  await send();
-  inputBox.value.innerText = "";
-  // 判断输入是否为空
-  // if (inputBox.value.innerText === "") {
-  //   ELMessage({
-  //     message: "发送内容不能为空",
-  //     type: "warning",
-  //   });
-  // }
+  sendContent.text = inputBox.value.innerText.trim();
+  if (sendContent.text === "") {
+    ElMessage({
+      message: "发送内容不能为空",
+      type: "warning",
+    });
+    return;
+  } else {
+    await send();
+    inputBox.value.innerText = "";
+  }
 };
 
 // 发送消息
@@ -152,94 +154,61 @@ const getCurrentMessage = async () => {
     const res = await getMessages(params);
     if (res.data.code === 200) {
       messageList.value = res.data.data;
-      console.log("输出获取的聊天记录", messageList.value);
+      // console.log("输出获取的聊天记录", messageList.value);
     }
   } catch (error) {}
 };
+
+// 获取当前会话的成员（暂时不支持群聊）
 const getConversationMembers = async () => {
   const params = {
     conversationId: route.params.roomId,
   };
   try {
     const res = await getSelectedConversation(params);
-    console.log("输出获取的会话成员", res.data.data);
     if (res.data.code === 200) {
-      const members = res.data.data.members;
-
-      const memberPromises = members.map((member) => getUser(member._id));
-      const memberInfos = await Promise.all(memberPromises);
-      console.log("mem", memberInfos);
-
-      memberInfos.forEach((memberInfo) => {
-        if (memberInfo._id !== currentUserId.value) {
-          receiverUserInfo.value = memberInfo;
-        } else {
-          senderUserInfo.value = memberInfo;
-        }
-      });
-      console.log("输出发送者信息", senderUserInfo.value);
-      console.log("输出接收者信息", receiverUserInfo.value);
+      memberList.value = res.data.data.members;
     }
-  } catch (error) {
-    console.error("获取会话成员出错:", error);
-  }
+  } catch (error) {}
 };
 
 const getUser = async (userId) => {
   try {
     const res = await getUserInfo(userId);
     if (res.data.code === 200) {
-      console.log("获取当个用户消息成功");
       return res.data.data;
-    } else {
-      console.error(`获取用户信息失败: ${res.data.message}`);
     }
-  } catch (error) {
-    console.error(`获取用户信息出错: ${error}`);
-  }
-  return null; // 确保有返回值
+  } catch (error) {}
 };
-// const getConversationMembers = async () => {
-//   const params = {
-//     conversationId: route.params.roomId,
-//   };
-//   try {
-//     const res = await getSelectedConversation(params);
-//     console.log("输出获取的会话成员", res.data.data);
-//     if (res.data.code === 200) {
-//       for (let i = 0; i < res.data.data.members.length; i++) {
-//         if (res.data.data.members[i]._id !== currentUserId.value) {
-//           receiverUserInfo.value = await getUser(res.data.data.members[i]._id);
-//         } else {
-//           senderUserInfo.value = await getUser(res.data.data.members[i]._id);
-//         }
-//       }
-//       console.log("输出发送者信息", senderUserInfo.value);
-//       console.log("输出接收者信息", receiverUserInfo.value);
-//     }
-//   } catch (error) {}
-// };
-
-// const getUser = async (userId) => {
-//   try {
-//     const res = await getUserInfo(userId);
-//     if (res.data.code === 200) {
-//       return res.data.data;
-//     }
-//   } catch (error) {}
-// };
 
 onBeforeMount(async () => {
   try {
+    socketServer.joinRoom("joinRoom", route.params.roomId);
     await getCurrentMessage();
     await getConversationMembers();
   } catch (error) {}
 });
 
 // 通过监听器来监听路由参数的变化,获取roomId,来根据房间号获取聊天记录
-watch(route, async () => {
+watch(route, async (newVal) => {
+  socketServer.joinRoom("joinRoom", newVal.params.roomId);
   getCurrentMessage();
 });
+
+watch(
+  memberList,
+  () => {
+    // console.log("memberList", memberList.value);
+    memberList.value.forEach(async (item) => {
+      if (item !== currentUserId.value) {
+        senderUserInfo.value = await getUser(item);
+      } else {
+        receiverUserInfo.value = await getUser(item);
+      }
+    });
+  },
+  { deep: true }
+);
 watch(
   messageList,
   (newVal) => {
@@ -266,7 +235,7 @@ watch(
       justify-content: flex-start;
       align-items: center;
       span {
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin-left: 1rem;
         font-weight: bold;
       }
@@ -290,22 +259,26 @@ watch(
 
         .chatMessageBox {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: flex-start;
           margin: 1rem 0;
           padding: 0 2rem;
           .avatar {
+            width: 5vh;
             min-width: 5vh;
+            max-width: 5vh;
             height: 5vh;
+
             img {
               width: 100%;
               height: 100%;
               border-radius: 50%;
+              object-fit: cover;
             }
           }
           .messageContent {
             margin-left: 1rem;
-            max-width: calc(100% - 5vh);
+            max-width: calc(100% - 40vh);
             .messageText {
               padding: 0.5rem;
               border-radius: 1rem;

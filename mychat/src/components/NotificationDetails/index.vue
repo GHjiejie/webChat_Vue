@@ -1,14 +1,14 @@
 <template>
   <div class="notificationDetails">
     <div class="noticeList">
-      <div class="noticeItem" v-for="request in noticeArr">
+      <div
+        class="noticeItem"
+        v-for="(request, index) in noticeArr"
+        :key="request._id"
+      >
         <!-- 用户的基本信息 -->
         <div class="user_avatar">
-          <img
-            :src="request.avatar"
-            alt="avatar"
-            style="width: 2.5rem; height: 2.5rem"
-          />
+          <img :src="request.avatar" alt="avatar" class="avatar-img" />
         </div>
         <div class="user_info">
           <span class="user_username">{{ request.username }}</span>
@@ -25,14 +25,14 @@
                 type="primary"
                 size="small"
                 plain
-                @click="apply(request._id)"
+                @click="apply(request._id, index)"
                 >同意</el-button
               >
               <el-button
                 type="danger"
                 size="small"
                 plain
-                @click="refuse(request._id)"
+                @click="refuse(request._id, index)"
                 >拒绝</el-button
               >
             </div>
@@ -91,14 +91,14 @@
               type="primary"
               size="small"
               plain
-              @click="apply(request._id)"
+              @click="apply(request._id, index)"
               >同意</el-button
             >
             <el-button
               type="danger"
               size="small"
               plain
-              @click="refuse(request._id)"
+              @click="refuse(request._id, index)"
               >拒绝</el-button
             >
           </div>
@@ -114,18 +114,22 @@
     </div>
   </div>
 </template>
+
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
 import { ElMessage } from "element-plus";
 import { refuseFriend, agreeFriend } from "@/apis/user";
 const currentUserId = localStorage.getItem("userId");
-console.log("currentUserId", currentUserId);
+// console.log("currentUserId", currentUserId);
+const emits = defineEmits(["applyFriend", "refuseFriend"]);
 const props = defineProps({
   noticeArr: Array,
   type: String,
 });
-console.log("props", props);
-const refuse = async (fromUserId) => {
+// console.log("props", props);
+const refuse = async (fromUserId, index) => {
+  // console.log("拒绝好友请求", fromUserId);
+
   const data = {
     fromUserId,
     userId: currentUserId,
@@ -133,13 +137,15 @@ const refuse = async (fromUserId) => {
   try {
     const res = await refuseFriend(data);
     if (res.data.code === 200) {
+      props.noticeArr[index].status = "rejected";
+      emits("refuseFriend", props.noticeArr[index]);
       ElMessage.success("已拒绝好友请求");
     }
   } catch (error) {}
 };
 
-const apply = async (fromUserId) => {
-  console.log("同意好友请求", fromUserId);
+const apply = async (fromUserId, index) => {
+  // console.log("index", index);
   const data = {
     fromUserId,
     userId: currentUserId,
@@ -147,6 +153,8 @@ const apply = async (fromUserId) => {
   try {
     const res = await agreeFriend(data);
     if (res.data.code === 200) {
+      console.log("同意好友请求", fromUserId);
+      props.noticeArr[index].status = "accepted";
       ElMessage.success("已同意好友请求");
     }
   } catch (error) {}
@@ -157,20 +165,38 @@ console.log("props", props);
 .notificationDetails {
   width: 60%;
   background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+
   .noticeList {
     .noticeItem {
       display: flex;
       align-items: center;
-      padding: 0.5rem;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+      &:hover {
+        transform: translateY(-3px);
+      }
       .user_avatar {
         margin-right: 1rem;
+        img {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #007bff;
+        }
       }
       .user_info {
         flex: 1;
         .user_username {
           font-size: 1.2rem;
           font-weight: bold;
+          color: #333;
         }
         .user_content {
           font-size: 1rem;

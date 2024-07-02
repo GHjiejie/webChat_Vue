@@ -5,13 +5,14 @@
     </div>
     <div class="operationList">
       <!-- 聊天 -->
-      <router-link to="/">
+      <router-link to="/chat" active-class="active">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-liaotian"></use>
         </svg>
       </router-link>
+
       <!-- 通讯录 -->
-      <router-link to="/contacts">
+      <router-link to="/contacts" active-class="active">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-tongxunlu1"></use>
         </svg>
@@ -20,13 +21,13 @@
         <use xlink:href="#icon-biaoqing-xue"></use>
       </svg> -->
       <!-- 通知 -->
-      <router-link to="/notice">
+      <router-link to="/notice" active-class="active">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-noticetongzhi"></use>
         </svg>
       </router-link>
       <!-- 朋友圈 -->
-      <router-link to="/friendsupdate">
+      <router-link to="/friendsupdate" active-class="active">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-pengyouquan1"></use>
         </svg>
@@ -87,6 +88,13 @@ watch(currentUserinfo, (newVal) => {
 <style scoped lang="scss">
 ::-webkit-scrollbar {
   width: 0px;
+}
+.active {
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: deepskyblue !important;
+  }
 }
 
 .function-menu {

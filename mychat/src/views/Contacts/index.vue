@@ -21,6 +21,7 @@
           <router-link
             :to="`/contacts/${friend._id}`"
             class="friendItem"
+            active-class="active"
             v-for="friend in friendList"
             @click="viewFriend(friend)"
           >
@@ -76,15 +77,21 @@ const openAddDialog = () => {
   showAddDialog.value = true;
 };
 watch(friendListId, async (newVal) => {
-  console.log("newVal", newVal);
+  // console.log("newVal", newVal);
   for (let i = 0; i < newVal.length; i++) {
     const res = await getUserInfo(newVal[i]);
     friendList.value.push(res.data.data);
   }
-  console.log("friendList", friendList.value);
+  // console.log("friendList", friendList.value);
 });
 </script>
 <style scoped lang="scss">
+.active {
+  background-color: #c7c6c6 !important;
+}
+a {
+  text-decoration: none;
+}
 :deep(.el-dialog) {
   border-radius: 1rem;
   background-color: transparent;
@@ -188,7 +195,9 @@ watch(friendListId, async (newVal) => {
             gap: 0.5rem;
             margin-left: 1rem;
             .friend_username {
-              font-size: 16px;
+              font-size: 0.9rem;
+              font-weight: bold;
+              color: black;
             }
             .friend_id {
               font-size: 14px;
