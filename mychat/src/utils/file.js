@@ -22,6 +22,7 @@ export const getFileType = (type) => {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
       "docx",
     "application/zip": "zip",
+    "application/x-zip-compressed": "zip",
   };
   return typeMap[type] || "unknown"; // 如果没有匹配到，返回 'unknown'
 };

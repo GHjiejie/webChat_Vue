@@ -34,7 +34,10 @@
       </router-link>
       <!-- 修改用户个人信息 -->
       <svg class="icon" aria-hidden="true" @click="userManage">
-        <use xlink:href="#icon-tongxunlu"></use>
+        <use
+          xlink:href="#icon-a-24yonghuguanli
+"
+        ></use>
       </svg>
     </div>
     <el-dialog

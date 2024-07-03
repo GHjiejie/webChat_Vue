@@ -7,7 +7,7 @@
             type="search"
             @keyup.enter="handleSearch"
             v-model="searchValue"
-            placeholder="搜索会话"
+            placeholder="搜索好友"
           />
           <div class="friendAdd">
             <svg class="icon" aria-hidden="true" @click="openAddDialog">
@@ -56,9 +56,9 @@ const currentUserinfo = ref({});
 const showAddDialog = ref(false);
 const friendList = ref([]);
 const friendListId = ref([]);
-const viewFriend = (frienndId) => {
-  console.log("查看好友", frienndId);
-};
+// const viewFriend = (frienndId) => {
+//   // console.log("查看好友", frienndId);
+// };
 
 onBeforeMount(async () => {
   // const res = await getUserInfo(localStorage.getItem("userId"));

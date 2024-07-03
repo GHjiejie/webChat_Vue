@@ -1,3 +1,3 @@
 <template>
-  <h1>好友动态</h1>
+  <el-empty image-size="300" />
 </template>

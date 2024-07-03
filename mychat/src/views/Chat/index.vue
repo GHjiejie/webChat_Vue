@@ -49,6 +49,7 @@ import { getConversationList } from "@/apis/chat";
 import socketServer from "@/plugins/socket.js";
 const router = useRouter();
 const conversationList = ref([]);
+const searchValue = ref("");
 const currentUserId = ref(localStorage.getItem("userId"));
 onBeforeMount(async () => {
   await getAllConversation();
@@ -70,7 +71,6 @@ const getAllConversation = async () => {
     }
   } catch (error) {}
 };
-
 </script>
 <style scoped lang="scss">
 .active {

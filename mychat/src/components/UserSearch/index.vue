@@ -1,7 +1,12 @@
 <template>
   <div class="addUser">
     <div class="searchBox">
-      <input type="search" @keyup.enter="handleSearch" v-model="searchValue" />
+      <input
+        type="search"
+        @keyup.enter="handleSearch"
+        v-model="searchValue"
+        placeholder="输入关键字搜索好友"
+      />
     </div>
     <div class="userList">
       <div class="userItem" v-for="user in userList">
@@ -49,7 +54,7 @@ const apply = async (toUserId) => {
     phone: props.phone,
   };
   const res = await applyFriend(data);
-  console.log(res);
+  // console.log(res);
 };
 </script>
 <style scoped lang="scss">
@@ -81,6 +86,14 @@ const apply = async (toUserId) => {
       &:hover {
         border: 1px solid rgba(0, 0, 0, 0.522);
       }
+      &::placeholder {
+        font-size: 0.8rem;
+        color: #ccc;
+      }
+    }
+    input[placeholder] {
+      font-size: 1rem;
+      color: #000000;
     }
   }
   .userList {

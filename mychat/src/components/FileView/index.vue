@@ -36,7 +36,7 @@
   </div>
 </template>
 <script setup>
-import { ref, defineProps, onBeforeMount, defineEmits } from "vue";
+import { ref, defineProps, onBeforeMount, defineEmits, watch } from "vue";
 import { getFileSize, getFileType } from "@/utils/file";
 import { handleSendFile } from "@/apis/chat";
 const emit = defineEmits(["sendFileSuccess"]);
@@ -46,7 +46,7 @@ const props = defineProps({
 const fileType = ref("");
 onBeforeMount(async () => {
   fileType.value = getFileType(props.fileInfo.type);
-  console.log("输出文件类型", fileType.value);
+  // console.log("输出文件类型", fileType.value);
   await handleFile();
 });
 const handleFile = async () => {
@@ -61,6 +61,14 @@ const handleFile = async () => {
     });
   }
 };
+watch(
+  () => props.fileInfo,
+  async () => {
+    // console.log("文件信息变化", props.fileInfo);
+    fileType.value = getFileType(props.fileInfo.type);
+    await handleFile();
+  }
+);
 </script>
 <style scoped lang="scss">
 .fileview {

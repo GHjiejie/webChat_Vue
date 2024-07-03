@@ -79,8 +79,8 @@ const chat = async (userId) => {
       try {
         const res = await createPrivateRoom(data);
         if (res.data.code === 200) {
-          console.log("创建私聊成功");
-          console.log("输出新创建的房间号", res.data.data._id);
+          // console.log("创建私聊成功");
+          // console.log("输出新创建的房间号", res.data.data._id);
           router.push(`/chat/${res.data.data._id}`);
         }
       } catch (error) {}
@@ -89,11 +89,11 @@ const chat = async (userId) => {
 };
 // 与当前用户语音通话
 const languageCall = (userId) => {
-  console.log("languageCall", userId);
+  // console.log("languageCall", userId);
 };
 // 与当前用户视频通话
 const videoCall = (userId) => {
-  console.log("videoCall", userId);
+  // console.log("videoCall", userId);
 };
 // onBeforeMount(async () => {
 //   try {
