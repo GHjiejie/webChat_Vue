@@ -6,10 +6,7 @@
     <div class="userList">
       <div class="userItem" v-for="user in userList">
         <div class="user_avatar">
-          <img
-            src="../../assets/images/pexels-photo-3560044.webp"
-            alt="avatar"
-          />
+          <img :src="user.avatar" alt="avatar" />
         </div>
         <div class="user_info">
           <span class="username">{{ user.username }}</span>
@@ -22,19 +19,12 @@
         </div>
       </div>
     </div>
-    <!-- <button @click="agree">同意好友申请</button>
-    <button @click="reject">拒绝好友申请</button> -->
   </div>
 </template>
 <script setup>
 import { ref, defineProps } from "vue";
 
-import {
-  searchUser,
-  applyFriend,
-  agreeFriend,
-  refuseFriend,
-} from "@/apis/user";
+import { searchUser, applyFriend } from "@/apis/user";
 const props = defineProps({
   username: String,
   avatar: String,
@@ -59,16 +49,6 @@ const apply = async (toUserId) => {
     phone: props.phone,
   };
   const res = await applyFriend(data);
-  console.log(res);
-};
-const agree = async () => {
-  console.log("同意好友申请");
-  const res = await agreeFriend();
-  console.log(res);
-};
-const reject = async () => {
-  console.log("拒绝好友申请");
-  const res = await refuseFriend();
   console.log(res);
 };
 </script>
@@ -131,6 +111,8 @@ const reject = async () => {
           width: 80%;
           height: 80%;
           border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid deepskyblue;
         }
       }
       .user_info {

@@ -51,3 +51,15 @@ export function sendMessage(data) {
     data,
   });
 }
+
+// 处理聊天过程中发送的文件
+export function handleSendFile(data) {
+  return httpRequest({
+    url: "/v1/chat/sendFile",
+    method: "post",
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}

@@ -42,8 +42,8 @@ const emit = defineEmits(["updateSucces"]);
 const currentUserAvatar = ref(props.userInfo.avatar);
 const updateForm = reactive({
   userId: props.userInfo._id,
-  username: "",
-  phone: "",
+  username:props.userInfo.username,
+  phone: props.userInfo.phone,
 });
 const changeAvatar = () => {
   inputRef.value.click();

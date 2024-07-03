@@ -53,6 +53,9 @@ import { getUserInfo } from "@/apis/user";
 import { useRoute, useRouter } from "vue-router";
 import { createPrivateRoom, verifyPrivateRoom } from "@/apis/chat";
 
+const props = defineProps({
+  userInfo: Object,
+});
 const userInfo = ref({});
 const route = useRoute();
 const router = useRouter();
@@ -92,22 +95,22 @@ const languageCall = (userId) => {
 const videoCall = (userId) => {
   console.log("videoCall", userId);
 };
-onBeforeMount(async () => {
-  try {
-    const res = await getUserInfo(route.params.id);
-    userInfo.value = res.data.data;
-  } catch (error) {
-    console.log("获取用户信息失败", error);
-  }
-});
-watch(route, async () => {
-  try {
-    const res = await getUserInfo(route.params.id);
-    userInfo.value = res.data.data;
-  } catch (error) {
-    console.log("获取用户信息失败", error);
-  }
-});
+// onBeforeMount(async () => {
+//   try {
+//     const res = await getUserInfo(route.params.id);
+//     userInfo.value = res.data.data;
+//   } catch (error) {
+//     console.log("获取用户信息失败", error);
+//   }
+// });
+// watch(route, async () => {
+//   try {
+//     const res = await getUserInfo(route.params.id);
+//     userInfo.value = res.data.data;
+//   } catch (error) {
+//     console.log("获取用户信息失败", error);
+//   }
+// });
 </script>
 <style scoped lang="scss">
 .userInfo {

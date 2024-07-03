@@ -62,9 +62,15 @@ const getAllConversation = async () => {
     const res = await getConversationList(params);
     if (res.data.code === 200) {
       conversationList.value = res.data.data;
+      // 默认选中第一个会话
+      if (conversationList.value.length > 0) {
+        router.push(`/chat/${conversationList.value[0]._id}`);
+      }
+      // console.log('输出所有获取的会话列表', conversationList.value);
     }
   } catch (error) {}
 };
+
 </script>
 <style scoped lang="scss">
 .active {

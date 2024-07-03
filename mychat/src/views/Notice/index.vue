@@ -3,7 +3,7 @@
     <el-tabs type="border-card">
       <el-tab-pane label="所有">
         <template v-if="friendRequests.length === 0">
-          <h1>没有收到好友请求哦</h1>
+          <Empty />
         </template>
         <template v-else>
           <noticeDetails
@@ -16,7 +16,7 @@
       </el-tab-pane>
       <el-tab-pane label="已发送">
         <template v-if="sentFriendRequests.length === 0">
-          <h1>没有发送好友请求哦</h1>
+          <Empty />
         </template>
         <template v-else>
           <noticeDetails
@@ -27,7 +27,7 @@
       </el-tab-pane>
       <el-tab-pane label="待处理">
         <template v-if="pendingArr.length === 0">
-          <h1>没有待处理的好友请求哦</h1>
+          <Empty />
         </template>
         <template v-else>
           <noticeDetails
@@ -40,7 +40,7 @@
       </el-tab-pane>
       <el-tab-pane label="已同意">
         <template v-if="acceptedArr.length === 0">
-          <h1>你还没有同意任何好友的申请哦</h1>
+          <Empty />
         </template>
         <template v-else>
           <noticeDetails
@@ -51,7 +51,7 @@
       </el-tab-pane>
       <el-tab-pane label="已拒绝">
         <template v-if="rejectedArr.length === 0">
-          <h1>你的信用很高哦，你还没有拒绝任何人哈！！！</h1>
+          <Empty />
         </template>
         <template v-else>
           <noticeDetails
@@ -67,6 +67,7 @@
 import { ref, onBeforeMount, watch } from "vue";
 import { getUserInfo, agreeFriend, refuseFriend } from "@/apis/user";
 import noticeDetails from "@/components/NotificationDetails/index.vue";
+import Empty from "@/components/Empty/index.vue";
 const currentUser = ref({});
 // 收到的好友请求
 const originFriendRequests = ref([]);
