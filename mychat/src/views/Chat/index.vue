@@ -43,10 +43,10 @@
 <script setup>
 import { ref, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
-import { getUserInfo } from "@/apis/user";
+// import { getUserInfo } from "@/apis/user";
 import { getConversationList } from "@/apis/chat";
 
-import socketServer from "@/plugins/socket.js";
+// import socketServer from "@/plugins/socket.js";
 const router = useRouter();
 const conversationList = ref([]);
 const searchValue = ref("");
@@ -67,7 +67,6 @@ const getAllConversation = async () => {
       if (conversationList.value.length > 0) {
         router.push(`/chat/${conversationList.value[0]._id}`);
       }
-      // console.log('输出所有获取的会话列表', conversationList.value);
     }
   } catch (error) {}
 };

@@ -27,7 +27,6 @@ const routes = [
         path: "contacts",
         name: "Contacts",
         component: () => import("@/views/Contacts/index.vue"),
-
         children: [
           {
             path: ":id",

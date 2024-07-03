@@ -93,7 +93,7 @@ const languageCall = (userId) => {
 };
 // 与当前用户视频通话
 const videoCall = (userId) => {
-  // console.log("videoCall", userId);
+  console.log("videoCall", userId);
 };
 // onBeforeMount(async () => {
 //   try {

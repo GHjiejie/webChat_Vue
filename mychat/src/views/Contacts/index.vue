@@ -7,7 +7,7 @@
             type="search"
             @keyup.enter="handleSearch"
             v-model="searchValue"
-            placeholder="搜索好友"
+            placeholder="搜索"
           />
           <div class="friendAdd">
             <svg class="icon" aria-hidden="true" @click="openAddDialog">
