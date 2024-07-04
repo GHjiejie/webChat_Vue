@@ -70,3 +70,21 @@ export function refuseFriend(data) {
     data,
   });
 }
+
+// 判断用户是否已经是好友
+export function isFriend(data) {
+  return httpRequest({
+    url: "/v1/user/isFriend",
+    method: "post",
+    data,
+  });
+}
+
+// 判断是否已经发送过好友申请
+export function isSentFriendRequest(data) {
+  return httpRequest({
+    url: "/v1/user/isSentFriendRequest",
+    method: "post",
+    data,
+  });
+}

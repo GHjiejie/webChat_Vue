@@ -29,7 +29,13 @@
 <script setup>
 import { ref, defineProps } from "vue";
 
-import { searchUser, applyFriend } from "@/apis/user";
+import {
+  searchUser,
+  applyFriend,
+  isFriend,
+  isSentFriendRequest,
+} from "@/apis/user";
+import { ElMessage } from "element-plus";
 const props = defineProps({
   username: String,
   avatar: String,
@@ -46,15 +52,77 @@ const handleSearch = async () => {
   } catch (error) {}
 };
 const apply = async (toUserId) => {
-  const data = {
-    fromUserId: localStorage.getItem("userId"),
-    toUserId,
-    username: props.username,
-    avatar: props.avatar,
-    phone: props.phone,
+  const verifyData = {
+    userId: localStorage.getItem("userId"),
+    friendId: toUserId,
   };
-  const res = await applyFriend(data);
-  // console.log(res);
+  const res = await isFriend(verifyData);
+  console.log("输出是否是好友", res.data);
+  if (res.data.code === 200) {
+    ElMessage({
+      type: "error",
+      message: "你们已经是好友了",
+    });
+    return;
+  } else {
+    const data = {
+      fromUserId: localStorage.getItem("userId"),
+      toUserId,
+      username: props.username,
+      avatar: props.avatar,
+      phone: props.phone,
+    };
+    // 判断是否已经发送过好友请求
+    const isSent = await isSentFriendRequest(verifyData);
+    // console.log("输出是否已经发送过好友请求", isSent.data);
+    if (isSent.data.code === 200) {
+      ElMessage({
+        type: "error",
+        message: "你已经发送过好友请求了",
+      });
+      return;
+    } else {
+      const res = await applyFriend(data);
+      if (res.data.code === 200) {
+        ElMessage({
+          type: "success",
+          message: "申请成功",
+        });
+      } else {
+        ElMessage({
+          type: "error",
+          message: "申请失败",
+        });
+      }
+    }
+  }
+
+  // if (res.data.data) {
+  //   ElMessage({
+  //     type: "error",
+  //     message: "你们已经是好友了",
+  //   });
+  // } else {
+  //   const data = {
+  //     fromUserId: localStorage.getItem("userId"),
+  //     toUserId,
+  //     username: props.username,
+  //     avatar: props.avatar,
+  //     phone: props.phone,
+  //   };
+  //   const res = await applyFriend(data);
+  //   if(res.data.code === 200) {
+  //     ElMessage({
+  //       type: "success",
+  //       message: "申请成功",
+  //     });
+  //   }else{
+  //     ElMessage({
+  //       type: "error",
+  //       message: "申请失败",
+  //     });
+  //   }
+  // }
 };
 </script>
 <style scoped lang="scss">
