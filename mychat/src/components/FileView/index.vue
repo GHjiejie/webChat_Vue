@@ -24,7 +24,7 @@
         />
         <img
           v-if="fileType === 'unknown'"
-          src="../../assets/images/unkonwn.png"
+          src="../../assets/images/unknown.png"
           alt="unknown"
         />
       </div>

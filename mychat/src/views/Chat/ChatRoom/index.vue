@@ -2,7 +2,7 @@
   <div class="chatRoom">
     <div class="header">
       <div class="chat-user">
-        <span>GXNU-SOFTWORE-50-409</span>
+        <span>GXNU-SOFTWARE-50-409</span>
       </div>
     </div>
     <div class="content" ref="contentRef">
