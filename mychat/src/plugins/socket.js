@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:3000");
+// const socket = io("http://47.76.177.148:3000");
 
 const socketServer = {
   // 加入房间

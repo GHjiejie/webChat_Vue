@@ -6,39 +6,43 @@
     <div class="operationList">
       <!-- 聊天 -->
       <router-link to="/chat" active-class="active">
-        <svg class="icon" aria-hidden="true">
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-liaotian"></use>
-        </svg>
+        </svg> -->
+        <svg-icon icon-class="icon-chat"></svg-icon>
       </router-link>
 
       <!-- 通讯录 -->
       <router-link to="/contacts" active-class="active">
-        <svg class="icon" aria-hidden="true">
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-tongxunlu1"></use>
-        </svg>
+        </svg> -->
+        <svg-icon icon-class="icon-tongxunlu"></svg-icon>
       </router-link>
       <!-- <svg class="icon" aria-hidden="true" @click="handleAdd">
         <use xlink:href="#icon-biaoqing-xue"></use>
       </svg> -->
       <!-- 通知 -->
       <router-link to="/notice" active-class="active">
-        <svg class="icon" aria-hidden="true">
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-noticetongzhi"></use>
-        </svg>
+        </svg> -->
+        <svg-icon icon-class="icon-notice"></svg-icon>
       </router-link>
       <!-- 朋友圈 -->
       <router-link to="/friendsupdate" active-class="active">
-        <svg class="icon" aria-hidden="true">
+        <svg-icon icon-class="icon-pengyouquan"></svg-icon>
+
+        <!-- <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-pengyouquan1"></use>
-        </svg>
+        </svg> -->
       </router-link>
       <!-- 修改用户个人信息 -->
-      <svg class="icon" aria-hidden="true" @click="userManage">
-        <use
-          xlink:href="#icon-a-24yonghuguanli
-"
-        ></use>
-      </svg>
+      <svg-icon icon-class="icon-userSetting"></svg-icon>
+
+      <!-- <svg class="icon" aria-hidden="true" @click="userManage">
+        <use xlink:href="#icon-a-24yonghuguanli"></use>
+      </svg> -->
     </div>
     <el-dialog
       v-model="userManageStatus"
@@ -130,6 +134,8 @@ watch(currentUserinfo, (newVal) => {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    // color: red;
+    // background-color: red;
     .icon {
       width: 1.5rem;
       height: 1.5rem;

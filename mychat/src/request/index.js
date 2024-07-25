@@ -3,7 +3,8 @@ import router from "@/router/index.js";
 import { ElMessage } from "element-plus";
 
 const service = axios.create({
-  baseURL: "http://localhost:9000",
+  // baseURL: "http://localhost:9000",
+  baseURL: "",
 });
 
 // 请求拦截器
